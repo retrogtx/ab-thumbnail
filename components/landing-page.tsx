@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight } from 'lucide-react'
 import { SignIn } from "@/components/sign-in"
 
-export default function LandingPage() {
+export function LandingPage() {
   const [mounted, setMounted] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
 
@@ -37,14 +37,14 @@ export default function LandingPage() {
         />
       ))}
 
-      <div className="container mx-auto px-4 py-4 relative z-10">
-        <nav className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">Thumbnail Tuner</h1>
+      <div className="container mx-auto px-4 py-16 relative z-10">
+        <nav className="flex justify-between items-center mb-16">
+          <h1 className="text-2xl font-bold">ThumbnailTester</h1>
         </nav>
 
         <main className="max-w-4xl mx-auto">
-          <h2 className="text-5xl font-bold mb-6 leading-tight">A/B Test Your Thumbnails</h2>
-          <p className="text-xl mb-8 text-gray-400">Get real audience feedback before your content goes live. Optimize for maximum engagement.</p>
+          <h2 className="text-5xl font-bold mb-6 leading-tight">A/B Test Your YouTube Thumbnails</h2>
+          <p className="text-xl mb-8 text-gray-400">Get real audience feedback before your video goes live. Optimize your thumbnails for maximum engagement.</p>
           {showLogin ? (
             <SignIn />
           ) : (
@@ -61,25 +61,23 @@ export default function LandingPage() {
           <div className="mt-24 grid gap-12">
             <section>
               <h3 className="text-2xl font-semibold mb-4">Upload Thumbnails</h3>
-              <p className="text-gray-400">Easily upload multiple thumbnails. Our intuitive interface makes it simple to compare different designs side by side.</p>
+              <p className="text-gray-400">Easily upload multiple thumbnail options for your upcoming videos. Our intuitive interface makes it simple to compare different designs side by side.</p>
             </section>
 
             <section>
               <h3 className="text-2xl font-semibold mb-4">Create Polls</h3>
-              <p className="text-gray-400">Generate shareable polls to gather feedback from your audience.</p>
-              <p className="text-gray-400">Reach out to your community or test with a random sample to get diverse opinions.</p>
+              <p className="text-gray-400">Generate shareable polls to gather feedback from your audience. Reach out to your community or test with a random sample to get diverse opinions.</p>
             </section>
 
             <section>
               <h3 className="text-2xl font-semibold mb-4">Analyze Results</h3>
-              <p className="text-gray-400">View detailed analytics to choose the most engaging thumbnail.</p>
-              <p className="text-gray-400">Make data-driven decisions to improve your content&apos;s CTR and overall performance.</p>
+              <p className="text-gray-400">View detailed analytics to choose the most engaging thumbnail. Make data-driven decisions to improve your video&apos;s click-through rate and overall performance.</p>
             </section>
           </div>
         </main>
 
         <footer className="mt-24 text-center">
-          <h3 className="text-3xl font-bold mb-6">Ready to see what works?</h3>
+          <h3 className="text-3xl font-bold mb-6">Ready to optimize your YouTube thumbnails?</h3>
           {showLogin ? (
             <SignIn />
           ) : (

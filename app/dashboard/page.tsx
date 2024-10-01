@@ -1,4 +1,5 @@
 import { auth } from "@/auth"
+import { SignOutButton } from "@/components/sign-out"
 import { redirect } from "next/navigation"
 
 export default async function DashboardPage() {
@@ -12,6 +13,7 @@ export default async function DashboardPage() {
     <div>
       <h1>Welcome to your dashboard, {session.user?.name}!</h1>
       {/* Add your dashboard content here */}
+      <SignOutButton />
     </div>
   )
 }
