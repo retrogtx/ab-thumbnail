@@ -1,11 +1,10 @@
-import SignIn from "./components/sign-in"
+import { SignIn } from "@/components/sign-in";
 
-const page = () => {
+export default function Home() {
   return (
-    <div>
-      <SignIn />
+    <div className="flex flex-col justify-center items-center h-screen">
+      Welcome to A/B testing!
+      <SignIn/>
     </div>
   )
 }
-
-export default page
