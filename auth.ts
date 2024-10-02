@@ -18,20 +18,18 @@ export const {
   ],
   callbacks: {
     async session({ session, user }) {
-      console.log("Session callback - User:", user)
       if (session.user) {
         session.user.id = user.id;
       }
-      console.log("Session callback - Updated session:", session)
       return session;
     },
   },
   pages: {
     signIn: '/signin',
   },
-  events: {
-    async signOut() {
-      console.log("SignOut event triggered")
-    },
+  session: {
+    strategy: "database",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
   },
 })
