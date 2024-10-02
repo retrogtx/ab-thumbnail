@@ -4,7 +4,7 @@ import { auth } from "./auth"
 
 export async function middleware(request: NextRequest) {
   const session = await auth()
-  if (!session && !request.nextUrl.pathname.startsWith('/signin')) {
+  if (!session && !request.nextUrl.pathname.startsWith('/signin') && !request.nextUrl.pathname.startsWith('/api/auth')) {
     return NextResponse.redirect(new URL("/signin", request.url))
   }
   return NextResponse.next()
