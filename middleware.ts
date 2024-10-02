@@ -4,17 +4,12 @@ import { auth } from "./auth"
 
 export async function middleware(request: NextRequest) {
   const session = await auth()
-  console.log("Middleware - Session:", session)
-  console.log("Middleware - Current path:", request.nextUrl.pathname)
+  console.log("Middleware - Session:", JSON.stringify(session, null, 2))
+  console.log("Middleware - URL:", request.url)
 
   if (!session && request.nextUrl.pathname.startsWith('/dashboard')) {
-    console.log("Middleware - No session, redirecting to signin")
+    console.log("Middleware - Redirecting to signin")
     return NextResponse.redirect(new URL('/signin', request.url))
-  }
-
-  if (session && request.nextUrl.pathname === '/signin') {
-    console.log("Middleware - Session exists, redirecting to dashboard")
-    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   console.log("Middleware - Allowing access")
@@ -22,5 +17,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/signin"],
+  matcher: ["/dashboard/:path*"],
 }

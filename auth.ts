@@ -16,20 +16,31 @@ export const {
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    async session({ session, user }) {
+    async jwt({ token, user, account }) {
+      if (account) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = user.id;
+        session.user.id = token.id as string;
       }
       return session;
     },
   },
+  events: {
+    async signIn({ user }) {
+      await prisma.session.deleteMany({
+        where: { userId: user.id },
+      });
+    },
+  },
   pages: {
     signIn: '/signin',
-  },
-  session: {
-    strategy: "database",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // 24 hours
   },
 })
