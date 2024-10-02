@@ -4,8 +4,6 @@ import { redirect } from "next/navigation"
 
 export default async function DashboardPage() {
   const session = await auth()
-  // Remove or comment out this line
-  // console.log("Dashboard - Session:", session)
 
   if (!session) {
     redirect("/signin")
