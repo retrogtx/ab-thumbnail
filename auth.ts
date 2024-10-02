@@ -18,13 +18,20 @@ export const {
   ],
   callbacks: {
     async session({ session, user }) {
+      console.log("Session callback - User:", user)
       if (session.user) {
         session.user.id = user.id;
       }
+      console.log("Session callback - Updated session:", session)
       return session;
     },
   },
   pages: {
     signIn: '/signin',
+  },
+  events: {
+    async signOut() {
+      console.log("SignOut event triggered")
+    },
   },
 })

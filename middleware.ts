@@ -4,12 +4,12 @@ import { auth } from "./auth"
 
 export async function middleware(request: NextRequest) {
   const session = await auth()
-  if (!session && !request.nextUrl.pathname.startsWith('/signin') && !request.nextUrl.pathname.startsWith('/api/auth')) {
-    return NextResponse.redirect(new URL("/signin", request.url))
-  }
+  console.log("Middleware - Session:", session)
+  console.log("Middleware - Current path:", request.nextUrl.pathname)
+
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 }
