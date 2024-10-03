@@ -1,12 +1,23 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
-import { auth } from "./auth"
+import { getToken } from "next-auth/jwt"
 
 export async function middleware(request: NextRequest) {
-  const session = await auth()
+  const secret = process.env.AUTH_SECRET
+  
+  if (!secret) {
+    console.error("AUTH_SECRET is not set")
+    return NextResponse.next()
+  }
 
-  if (!session && request.nextUrl.pathname.startsWith('/dashboard')) {
-    return NextResponse.redirect(new URL('/signin', request.url))
+  try {
+    const token = await getToken({ req: request, secret })
+
+    if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {
+      return NextResponse.redirect(new URL('/signin', request.url))
+    }
+  } catch (error) {
+    console.error("Error in middleware:", error)
   }
 
   return NextResponse.next()

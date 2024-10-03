@@ -1,7 +1,9 @@
 import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import { prisma } from "@/lib/prisma"
+import prisma from "@/lib/prisma"
 import Google from "next-auth/providers/google"
+
+const isEdgeRuntime = process.env.NEXT_RUNTIME === 'edge'
 
 export const {
   handlers,
@@ -9,7 +11,7 @@ export const {
   signIn,
   signOut 
 } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: isEdgeRuntime ? undefined : PrismaAdapter(prisma),
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
@@ -33,14 +35,8 @@ export const {
       return session;
     },
   },
-  events: {
-    async signIn({ user }) {
-      await prisma.session.deleteMany({
-        where: { userId: user.id },
-      });
-    },
-  },
   pages: {
     signIn: '/signin',
   },
+  secret: process.env.AUTH_SECRET,
 })
