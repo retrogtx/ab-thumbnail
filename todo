@@ -62,7 +62,7 @@ Comments Display: Section showing any comments left by voters explaining their c
 Tech Stack:
 Frontend: Next.js for building the interface, with Tailwind CSS for responsive and clean design.
 Backend: Next.js API routes to handle thumbnail uploads, vote tracking, and poll management.
-Database: PostgreSQL for storing thumbnails, poll data, and voting results. We are using drizzle as the ORM.
+Database: PostgreSQL for storing thumbnails, poll data, and voting results. We are using prisma as the ORM.
 Storage: Use Supabase for storing the uploaded thumbnails.
 Authentication: Use NextAuth for secure login, and Google OAuth for authentication.
 Sharing Mechanism: The app generates unique poll links for users to share externally.
