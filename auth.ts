@@ -3,15 +3,13 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 import prisma from "@/lib/prisma"
 import Google from "next-auth/providers/google"
 
-const isEdgeRuntime = process.env.NEXT_RUNTIME === 'edge'
-
 export const {
   handlers,
   auth,
   signIn,
   signOut 
 } = NextAuth({
-  adapter: isEdgeRuntime ? undefined : PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma),
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
