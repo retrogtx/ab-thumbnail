@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/signin', request.url))
   }
 
-  if (session && request.nextUrl.pathname === '/signin') {
+  if (session && request.nextUrl.pathname === '/signin' || request.nextUrl.pathname === '/') {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
@@ -17,5 +17,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/signin"],
+  matcher: ["/dashboard/:path*", "/signin", "/"],
 }

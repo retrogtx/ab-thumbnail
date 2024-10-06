@@ -17,7 +17,8 @@ export async function POST(req: Request) {
     const { title, description, thumbnailUrls } = body;
 
     if (!title || !description || !thumbnailUrls || thumbnailUrls.length !== 2) {
-      return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
+      console.error('Invalid input data:', { title, description, thumbnailUrls });
+      return NextResponse.json({ error: 'Invalid input data', details: { title, description, thumbnailUrlsCount: thumbnailUrls?.length } }, { status: 400 });
     }
 
     console.log('Creating poll in database...');

@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
@@ -63,6 +63,7 @@ export default function PollPage() {
     }
 
     try {
+      console.log('Sending vote request:', { pollId: id, thumbnailId });
       const response = await fetch(`/api/polls/${id}/vote`, {
         method: 'POST',
         headers: {
@@ -71,12 +72,14 @@ export default function PollPage() {
         body: JSON.stringify({ thumbnailId }),
       })
 
+      const responseData = await response.json()
+      console.log('Vote response:', responseData);
+
       if (!response.ok) {
-        throw new Error('Failed to vote')
+        throw new Error(responseData.error || 'Failed to vote')
       }
 
-      const updatedPoll = await response.json()
-      setPollData(updatedPoll.poll)
+      setPollData(responseData.poll)
       setVoted(true)
       
       toast({
@@ -87,7 +90,7 @@ export default function PollPage() {
       console.error('Error voting:', error)
       toast({
         title: "Error",
-        description: "Failed to record your vote. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to record your vote. Please try again.",
         variant: "destructive",
       })
     }

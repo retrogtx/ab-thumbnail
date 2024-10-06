@@ -66,3 +66,6 @@ Database: PostgreSQL for storing thumbnails, poll data, and voting results. We a
 Storage: Use Supabase for storing the uploaded thumbnails.
 Authentication: Use NextAuth for secure login, and Google OAuth for authentication.
 Sharing Mechanism: The app generates unique poll links for users to share externally.
+
+
+please implement the polling part for anonymous users. we have succesfully implemented the code that uploads the two images required for a poll to supabase.
