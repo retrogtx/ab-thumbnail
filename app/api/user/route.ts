@@ -20,6 +20,11 @@ export async function DELETE() {
 
     // Delete all polls and related data
     for (const poll of userPolls) {
+      // Delete votes associated with the poll
+      await prisma.vote.deleteMany({
+        where: { pollId: poll.id },
+      });
+
       // Delete thumbnail images from Supabase storage
       for (const thumbnail of poll.thumbnails) {
         const filePath = thumbnail.url.split('/').pop();
@@ -31,6 +36,7 @@ export async function DELETE() {
       // Delete the poll from the database
       await prisma.poll.delete({ where: { id: poll.id } });
     }
+
     // Delete the user account
     await prisma.user.delete({ where: { id: userId } });
 

@@ -5,6 +5,17 @@ import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import { signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export function Settings() {
   const [isDeleting, setIsDeleting] = useState(false)
@@ -12,9 +23,6 @@ export function Settings() {
   const router = useRouter()
 
   const handleDeleteAccount = async () => {
-    if (!confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
-      return
-    }
     setIsDeleting(true)
     try {
       const response = await fetch('/api/user', {
@@ -46,13 +54,28 @@ export function Settings() {
   return (
     <div className="mt-8">
       <h2 className="text-xl font-semibold mb-4">Account Settings</h2>
-      <Button 
-        onClick={handleDeleteAccount}
-        variant="destructive"
-        disabled={isDeleting}
-      >
-        {isDeleting ? "Deleting..." : "Delete Account"}
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="destructive" disabled={isDeleting}>
+            {isDeleting ? "Deleting..." : "Delete Account"}
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteAccount}>
+              Delete Account
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
