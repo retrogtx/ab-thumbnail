@@ -43,3 +43,43 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Failed to create poll', details: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
+
+export async function GET() {
+  try {
+    const session = await auth();
+    if (!session || !session.user || !session.user.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const polls = await prisma.poll.findMany({
+      where: { userId: session.user.id },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        thumbnails: {
+          select: {
+            id: true,
+            url: true,
+            _count: { select: { votes: true } },
+          },
+        },
+      },
+    });
+
+    const formattedPolls = polls.map(poll => ({
+      id: poll.id,
+      title: poll.title,
+      description: poll.description,
+      createdAt: poll.createdAt.toISOString(),
+      thumbnails: poll.thumbnails.map(thumbnail => ({
+        id: thumbnail.id,
+        url: thumbnail.url,
+        votes: thumbnail._count.votes,
+      })),
+    }));
+
+    return NextResponse.json(formattedPolls);
+  } catch (error) {
+    console.error('Error fetching polls:', error);
+    return NextResponse.json({ error: 'Failed to fetch polls' }, { status: 500 });
+  }
+}

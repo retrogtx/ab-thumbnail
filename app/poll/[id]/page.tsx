@@ -109,9 +109,17 @@ export default function PollPage() {
       <h1 className="text-3xl font-bold mb-4">{pollData.title}</h1>
       <p className="text-lg mb-6">{pollData.description}</p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {pollData.thumbnails.map((thumbnail) => (
+        {pollData.thumbnails.map((thumbnail, index) => (
           <div key={thumbnail.id} className="flex flex-col items-center">
-            <Image src={thumbnail.url} alt={`Thumbnail`} width={400} height={225} className="mb-4" />
+            <Image 
+              src={thumbnail.url} 
+              alt={`Thumbnail ${index + 1}`} 
+              width={400} 
+              height={225} 
+              className="mb-4" 
+              priority={index < 2}
+              loading={index < 2 ? "eager" : "lazy"}
+            />
             <Button 
               onClick={() => voteThumbnail(thumbnail.id)}
               disabled={voted}

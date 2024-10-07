@@ -5,15 +5,15 @@ import { Textarea } from "@/components/ui/textarea"
 import { supabaseAdmin } from '@/lib/supabaseAdmin'
 import { useSession } from "next-auth/react"
 import { useToast } from "@/hooks/use-toast"
-import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { v4 as uuidv4 } from 'uuid';
 
 interface CreatePollFormProps {
-  onCancel: () => void
+  onCancel: () => void;
+  onPollCreated: () => void;
 }
 
-export function CreatePollForm({ onCancel }: CreatePollFormProps) {
+export function CreatePollForm({ onCancel, onPollCreated }: CreatePollFormProps) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [image1, setImage1] = useState<File | null>(null)
@@ -23,7 +23,6 @@ export function CreatePollForm({ onCancel }: CreatePollFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { data: session } = useSession()
   const { toast } = useToast()
-  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,8 +71,8 @@ export function CreatePollForm({ onCancel }: CreatePollFormProps) {
         description: "Poll created successfully!",
       })
 
-      // Redirect to the new poll page
-      router.push(`/poll/${poll.id}`)
+      onPollCreated();
+      onCancel();
     } catch (error) {
       console.error('Error in handleSubmit:', error);
       toast({
