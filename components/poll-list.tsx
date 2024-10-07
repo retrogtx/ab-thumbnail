@@ -1,6 +1,18 @@
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
 import Link from "next/link"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 interface Thumbnail {
   id: string;
@@ -24,8 +36,10 @@ interface PollListProps {
 
 export function PollList({ polls, onPollDeleted, onCopyPollLink }: PollListProps) {
   const { toast } = useToast()
+  const [deletingPollId, setDeletingPollId] = useState<string | null>(null)
 
   const handleDeletePoll = async (pollId: string) => {
+    setDeletingPollId(pollId)
     try {
       const response = await fetch(`/api/polls/${pollId}`, {
         method: 'DELETE',
@@ -43,6 +57,8 @@ export function PollList({ polls, onPollDeleted, onCopyPollLink }: PollListProps
         description: "Failed to delete poll. Please try again.",
         variant: "destructive",
       })
+    } finally {
+      setDeletingPollId(null)
     }
   }
 
@@ -72,13 +88,32 @@ export function PollList({ polls, onPollDeleted, onCopyPollLink }: PollListProps
                 >
                   Copy Link
                 </Button>
-                <Button 
-                  onClick={() => handleDeletePoll(poll.id)}
-                  variant="destructive"
-                  size="sm"
-                >
-                  Delete Poll
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button 
+                      variant="destructive"
+                      size="sm"
+                      disabled={deletingPollId === poll.id}
+                    >
+                      {deletingPollId === poll.id ? "Deleting poll..." : "Delete Poll"}
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure you want to delete this poll?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the poll
+                        and all associated votes.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDeletePoll(poll.id)}>
+                        Delete Poll
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </li>
           ))}

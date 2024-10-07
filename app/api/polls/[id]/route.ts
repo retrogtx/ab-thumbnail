@@ -55,7 +55,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
 
     const pollId = params.id;
 
-    // Fetch the poll to get the thumbnail URLs
+    // Fetch the poll to get the thumbnail URLs and check ownership
     const poll = await prisma.poll.findUnique({
       where: { id: pollId },
       include: { thumbnails: true },
@@ -68,6 +68,11 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     if (poll.userId !== session.user.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
+
+    // Delete all votes associated with the poll
+    await prisma.vote.deleteMany({
+      where: { pollId: pollId },
+    });
 
     // Delete the poll and related data from the database
     await prisma.poll.delete({
@@ -82,7 +87,7 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       }
     }
 
-    return NextResponse.json({ message: 'Poll deleted successfully' });
+    return NextResponse.json({ message: 'Poll and associated votes deleted successfully' });
   } catch (error) {
     console.error('Error deleting poll:', error);
     return NextResponse.json({ error: 'Failed to delete poll' }, { status: 500 });
