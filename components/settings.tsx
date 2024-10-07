@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
+import { signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 
 export function Settings() {
@@ -14,13 +15,17 @@ export function Settings() {
     if (!confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
       return
     }
-
     setIsDeleting(true)
     try {
       const response = await fetch('/api/user', {
         method: 'DELETE',
       })
-      if (!response.ok) throw new Error('Failed to delete account')
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Failed to delete account')
+      
+      // Sign out the user
+      await signOut({ redirect: false })
+      
       toast({
         title: "Success",
         description: "Your account has been deleted.",

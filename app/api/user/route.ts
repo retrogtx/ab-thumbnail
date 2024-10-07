@@ -31,10 +31,13 @@ export async function DELETE() {
       // Delete the poll from the database
       await prisma.poll.delete({ where: { id: poll.id } });
     }
-
     // Delete the user account
     await prisma.user.delete({ where: { id: userId } });
-    return NextResponse.json({ message: 'Account deleted successfully', redirect: '/' });
+
+    // Clear the session
+    await prisma.session.deleteMany({ where: { userId } });
+
+    return NextResponse.json({ message: 'Account deleted successfully' });
   } catch (error) {
     console.error('Error deleting account:', error);
     return NextResponse.json({ error: 'Failed to delete account' }, { status: 500 });

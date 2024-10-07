@@ -51,7 +51,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   polls         Poll[]
-  posts         Post[]    // Add this line to create the relation with Post
+  posts         Post[]    
 }
 
 model VerificationToken {
@@ -69,7 +69,7 @@ model Poll {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   userId       String
-  user         User     @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   thumbnails   Thumbnail[]
   votes        Vote[]
 }
@@ -78,7 +78,7 @@ model Thumbnail {
   id        String   @id @default(cuid())
   url       String
   pollId    String
-  poll      Poll     @relation(fields: [pollId], references: [id])
+  poll      Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
   votes     Vote[]
 }
 
