@@ -5,8 +5,8 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 
 export const metadata: Metadata = {
-  title: "Thumbnail Tester",
-  description: "A/B test your YouTube thumbnails",
+  title: "Thumbnail Tuner",
+  description: "A/B test your YouTube thumbnails or photos",
 };
 
 export default async function RootLayout({
