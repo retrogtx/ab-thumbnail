@@ -62,63 +62,62 @@ export function PollList({ polls, onPollDeleted, onCopyPollLink }: PollListProps
     }
   }
 
+  if (polls.length === 0) {
+    return (
+      <p className="text-gray-600 dark:text-gray-400">You have not created any polls yet.</p>
+    );
+  }
+
   return (
-    <div className="w-full max-w-2xl mt-8">
-      <h2 className="text-xl font-semibold mb-4">Your Polls</h2>
-      {polls.length === 0 ? (
-        <p>You have not created any polls yet.</p>
-      ) : (
-        <ul className="space-y-4">
-          {polls.map((poll) => (
-            <li key={poll.id} className="border p-4 rounded-md">
-              <h3 className="font-semibold">{poll.title}</h3>
-              <p className="text-sm text-gray-600">{poll.description}</p>
-              <p className="text-sm text-gray-600">Created: {new Date(poll.createdAt).toLocaleDateString()}</p>
-              <p className="text-sm text-gray-600">Total Votes: {poll.thumbnails.reduce((sum, t) => sum + t.votes, 0)}</p>
-              <div className="mt-2 space-x-2">
-                <Link href={`/poll/${poll.id}`} passHref>
-                  <Button variant="outline" size="sm">
-                    View Poll
-                  </Button>
-                </Link>
+    <ul className="space-y-4">
+      {polls.map((poll) => (
+        <li key={poll.id} className="border p-4 rounded-md">
+          <h3 className="font-semibold">{poll.title}</h3>
+          <p className="text-sm text-gray-600">{poll.description}</p>
+          <p className="text-sm text-gray-600">Created: {new Date(poll.createdAt).toLocaleDateString()}</p>
+          <p className="text-sm text-gray-600">Total Votes: {poll.thumbnails.reduce((sum, t) => sum + t.votes, 0)}</p>
+          <div className="mt-2 space-x-2">
+            <Link href={`/poll/${poll.id}`} passHref>
+              <Button variant="outline" size="sm">
+                View Poll
+              </Button>
+            </Link>
+            <Button 
+              onClick={() => onCopyPollLink(poll.id)}
+              variant="outline" 
+              size="sm"
+            >
+              Copy Link
+            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
                 <Button 
-                  onClick={() => onCopyPollLink(poll.id)}
-                  variant="outline" 
+                  variant="destructive"
                   size="sm"
+                  disabled={deletingPollId === poll.id}
                 >
-                  Copy Link
+                  {deletingPollId === poll.id ? "Deleting poll..." : "Delete Poll"}
                 </Button>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button 
-                      variant="destructive"
-                      size="sm"
-                      disabled={deletingPollId === poll.id}
-                    >
-                      {deletingPollId === poll.id ? "Deleting poll..." : "Delete Poll"}
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure you want to delete this poll?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the poll
-                        and all associated votes.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => handleDeletePoll(poll.id)}>
-                        Delete Poll
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure you want to delete this poll?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will permanently delete the poll
+                    and all associated votes.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => handleDeletePoll(poll.id)}>
+                    Delete Poll
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </li>
+      ))}
+    </ul>
   )
 }
