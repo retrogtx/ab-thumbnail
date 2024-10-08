@@ -142,71 +142,89 @@ export function CreatePollForm({ onCancel, onPollCreated }: CreatePollFormProps)
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md">
-      <div className="mb-4">
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-          Poll Title
-        </label>
-        <Input
-          type="text"
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-          className="mt-1"
-        />
+    <div className="flex gap-8">
+      <form onSubmit={handleSubmit} className="w-full max-w-md">
+        <div className="mb-4">
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+            Poll Title
+          </label>
+          <Input
+            type="text"
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            className="mt-1"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+            Description
+          </label>
+          <Textarea
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="mt-1"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="image1" className="block text-sm font-medium text-gray-700">
+            Upload Thumbnail 1
+          </label>
+          <Input
+            type="file"
+            id="image1"
+            onChange={(e) => handleFileChange(e, setImage1, setImage1Preview)}
+            accept="image/*"
+            required
+            className="mt-1"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="image2" className="block text-sm font-medium text-gray-700">
+            Upload Thumbnail 2
+          </label>
+          <Input
+            type="file"
+            id="image2"
+            onChange={(e) => handleFileChange(e, setImage2, setImage2Preview)}
+            accept="image/*"
+            required
+            className="mt-1"
+          />
+        </div>
+        <div className="flex justify-end space-x-2">
+          <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Creating...' : 'Create Poll'}
+          </Button>
+        </div>
+      </form>
+      
+      <div className="w-full max-w-md">
+        <h3 className="text-lg font-semibold mb-4">Image Previews</h3>
+        <div className="flex gap-4">
+          <div className="w-1/2">
+            {image1Preview && (
+              <div>
+                <h4 className="text-sm font-medium mb-2">Thumbnail 1</h4>
+                <Image src={image1Preview} alt="Thumbnail 1 preview" width={200} height={112} className="rounded-lg object-cover w-full h-auto" />
+              </div>
+            )}
+          </div>
+          <div className="w-1/2">
+            {image2Preview && (
+              <div>
+                <h4 className="text-sm font-medium mb-2">Thumbnail 2</h4>
+                <Image src={image2Preview} alt="Thumbnail 2 preview" width={200} height={112} className="rounded-lg object-cover w-full h-auto" />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-      <div className="mb-4">
-        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-          Description
-        </label>
-        <Textarea
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="mt-1"
-        />
-      </div>
-      <div className="mb-4">
-        <label htmlFor="image1" className="block text-sm font-medium text-gray-700">
-          Upload Thumbnail 1
-        </label>
-        <Input
-          type="file"
-          id="image1"
-          onChange={(e) => handleFileChange(e, setImage1, setImage1Preview)}
-          accept="image/*"
-          required
-          className="mt-1"
-        />
-        {image1Preview && (
-          <Image src={image1Preview} alt="Thumbnail 1 preview" width={200} height={112} className="mt-2" />
-        )}
-      </div>
-      <div className="mb-4">
-        <label htmlFor="image2" className="block text-sm font-medium text-gray-700">
-          Upload Thumbnail 2
-        </label>
-        <Input
-          type="file"
-          id="image2"
-          onChange={(e) => handleFileChange(e, setImage2, setImage2Preview)}
-          accept="image/*"
-          required
-          className="mt-1"
-        />
-        {image2Preview && (
-          <Image src={image2Preview} alt="Thumbnail 2 preview" width={200} height={112} className="mt-2" />
-        )}
-      </div>
-      <div className="flex justify-end space-x-2">
-        <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
-          Cancel
-        </Button>
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Creating...' : 'Create Poll'}
-        </Button>
-      </div>
-    </form>
+    </div>
   )
 }
