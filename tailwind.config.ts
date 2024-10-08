@@ -56,8 +56,10 @@ const config: Config = {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		}
+  	},
+  	boxShadow: {
+  		'glow': '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff',
   	}
-  },
-  plugins: [require("tailwindcss-animate")],
+  }
 };
 export default config;
