@@ -32,6 +32,8 @@ export default function PollPage() {
   const [error, setError] = useState<string | null>(null)
   const [voted, setVoted] = useState(false)
   const { toast } = useToast()
+  const [isVoting, setIsVoting] = useState(false)
+  const [loadedImages, setLoadedImages] = useState<{[key: string]: boolean}>({})
 
   useEffect(() => {
     if (id) {
@@ -56,7 +58,7 @@ export default function PollPage() {
   }
 
   const voteThumbnail = async (thumbnailId: string) => {
-    if (voted) {
+    if (voted || isVoting) {
       toast({
         title: "Already Voted",
         description: "You have already cast your vote for this poll.",
@@ -64,6 +66,8 @@ export default function PollPage() {
       })
       return
     }
+
+    setIsVoting(true)
 
     try {
       console.log('Sending vote request:', { pollId: id, thumbnailId });
@@ -96,7 +100,13 @@ export default function PollPage() {
         description: error instanceof Error ? error.message : "Failed to record your vote. Please try again.",
         variant: "destructive",
       })
+    } finally {
+      setIsVoting(false)
     }
+  }
+
+  const handleImageLoad = (thumbnailId: string) => {
+    setLoadedImages(prev => ({...prev, [thumbnailId]: true}))
   }
 
   if (loading) {
@@ -141,18 +151,29 @@ export default function PollPage() {
                   src={thumbnail.url} 
                   alt={`Thumbnail ${index + 1}`} 
                   fill
-                  className="object-cover"
+                  className={`object-cover transition-opacity duration-300 ${loadedImages[thumbnail.id] ? 'opacity-100' : 'opacity-0'}`}
                   priority={index < 2}
                   loading={index < 2 ? "eager" : "lazy"}
+                  onLoad={() => handleImageLoad(thumbnail.id)}
                 />
+                {!loadedImages[thumbnail.id] && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+                    <div className="loader"></div>
+                  </div>
+                )}
               </div>
               <div className="p-4">
                 <Button 
                   onClick={() => voteThumbnail(thumbnail.id)}
-                  disabled={voted}
+                  disabled={voted || isVoting}
                   className="w-full mb-4"
                 >
-                  {voted ? 'Voted' : 'Vote for this thumbnail'}
+                  {isVoting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Voting...
+                    </>
+                  ) : voted ? 'Voted' : 'Vote for this thumbnail'}
                 </Button>
                 <Progress value={thumbnail.percentage} className="mb-2" />
                 <p className="text-sm text-center">
