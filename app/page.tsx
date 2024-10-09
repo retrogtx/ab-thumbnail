@@ -89,7 +89,7 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
-            Get real audience feedback before your content goes live.
+            Get audience feedback before publishing.
             <br />
             Optimize for maximum engagement.
           </motion.p>
@@ -140,7 +140,7 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
           >
-            <h2 className="text-3xl font-bold mb-4">Ready to see what works?</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-4 whitespace-nowrap">Ready to see what works?</h2>
             <p className="text-gray-400 mb-6">Join thousands of content creators who are boosting their video performance.</p>
             {showLogin ? (
               <SignIn />
