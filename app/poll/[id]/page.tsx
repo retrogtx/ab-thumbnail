@@ -5,6 +5,9 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
+import { Loader2 } from "lucide-react"
 
 interface Thumbnail {
   id: string
@@ -97,43 +100,70 @@ export default function PollPage() {
   }
 
   if (loading) {
-    return <div>Loading...</div>
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    )
   }
 
   if (error || !pollData) {
-    return <div>Error: {error || 'Failed to load poll data'}</div>
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="text-center text-red-500">Error</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-center">{error || 'Failed to load poll data'}</p>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">{pollData.title}</h1>
-      <p className="text-lg mb-6">{pollData.description}</p>
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="text-3xl font-bold">{pollData.title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-lg">{pollData.description}</p>
+        </CardContent>
+      </Card>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {pollData.thumbnails.map((thumbnail, index) => (
-          <div key={thumbnail.id} className="flex flex-col items-center">
-            <Image 
-              src={thumbnail.url} 
-              alt={`Thumbnail ${index + 1}`} 
-              width={400} 
-              height={225} 
-              className="mb-4" 
-              priority={index < 2}
-              loading={index < 2 ? "eager" : "lazy"}
-            />
-            <Button 
-              onClick={() => voteThumbnail(thumbnail.id)}
-              disabled={voted}
-              className="mb-2"
-            >
-              Vote for this thumbnail
-            </Button>
-            <p className="text-sm">
-              Votes: {thumbnail.votes} ({thumbnail.percentage.toFixed(2)}%)
-            </p>
-          </div>
+          <Card key={thumbnail.id} className="overflow-hidden transition-shadow duration-300 hover:shadow-lg">
+            <CardContent className="p-0">
+              <div className="relative aspect-video">
+                <Image 
+                  src={thumbnail.url} 
+                  alt={`Thumbnail ${index + 1}`} 
+                  fill
+                  className="object-cover"
+                  priority={index < 2}
+                  loading={index < 2 ? "eager" : "lazy"}
+                />
+              </div>
+              <div className="p-4">
+                <Button 
+                  onClick={() => voteThumbnail(thumbnail.id)}
+                  disabled={voted}
+                  className="w-full mb-4"
+                >
+                  {voted ? 'Voted' : 'Vote for this thumbnail'}
+                </Button>
+                <Progress value={thumbnail.percentage} className="mb-2" />
+                <p className="text-sm text-center">
+                  {thumbnail.votes} votes ({thumbnail.percentage.toFixed(2)}%)
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
-      <p className="mt-8 text-center">Total votes: {pollData.totalVotes}</p>
+      <p className="mt-8 text-center text-xl font-semibold">Total votes: {pollData.totalVotes}</p>
     </div>
   )
 }
