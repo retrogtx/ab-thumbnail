@@ -146,12 +146,13 @@ export default function PollPage() {
         {pollData.thumbnails.map((thumbnail, index) => (
           <Card key={thumbnail.id} className="overflow-hidden transition-shadow duration-300 hover:shadow-lg">
             <CardContent className="p-0">
-              <div className="relative aspect-video">
+              <div className="relative">
                 <Image 
                   src={thumbnail.url} 
                   alt={`Thumbnail ${index + 1}`} 
-                  fill
-                  className={`object-cover transition-opacity duration-300 ${loadedImages[thumbnail.id] ? 'opacity-100' : 'opacity-0'}`}
+                  width={500}
+                  height={500}
+                  className={`w-full h-auto object-contain transition-opacity duration-300 ${loadedImages[thumbnail.id] ? 'opacity-100' : 'opacity-0'}`}
                   priority={index < 2}
                   loading={index < 2 ? "eager" : "lazy"}
                   onLoad={() => handleImageLoad(thumbnail.id)}
