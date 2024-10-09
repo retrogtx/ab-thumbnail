@@ -1,45 +1,12 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { motion, useAnimation } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from 'lucide-react'
 import { SignIn } from "@/components/sign-in"
-
-const FloatingDot = () => {
-  const controls = useAnimation();
-
-  useEffect(() => {
-    const animate = async () => {
-      while (true) {
-        await controls.start({
-          x: Math.random() * window.innerWidth - window.innerWidth / 2,
-          y: Math.random() * window.innerHeight - window.innerHeight / 2,
-          opacity: [0.1, 0.5, 0.1],
-          scale: [1, 1.5, 1],
-          transition: {
-            duration: Math.random() * 10 + 5,
-            ease: "easeInOut",
-          },
-        });
-      }
-    };
-    
-    animate();
-    return () => controls.stop();
-  }, [controls]);
-
-  return (
-    <motion.div
-      className="absolute w-[1px] h-[1px] bg-white rounded-full opacity-10 shadow-glow"
-      style={{
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-      }}
-      animate={controls}
-    />
-  )
-}
+import Particles from '@/components/ui/particles'
+import { ShineBorder } from "@/components/ui/shine-border";
 
 export default function LandingPage() {
   const [mounted, setMounted] = useState(false)
@@ -62,10 +29,15 @@ export default function LandingPage() {
       {/* Gradient background */}
       <div className="absolute inset-0 bg-gradient-to-tr from-black via-black to-purple-900/20" />
 
-      {/* Floating dots */}
-      {[...Array(700)].map((_, i) => (
-        <FloatingDot key={i} />
-      ))}
+      {/* Particles */}
+      <Particles
+        className="absolute inset-0"
+        quantity={100}
+        staticity={50}
+        ease={50}
+        size={0.5}
+        color="#ffffff"
+      />
 
       <div className="relative z-10">
         <header className="container mx-auto px-4 py-6">
@@ -134,27 +106,30 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <motion.div 
-            className="bg-gradient-to-r from-gray-300/30 via-white/40 to-gray-200/30 rounded-lg p-8 text-center shadow-lg border border-gray-300 backdrop-blur-sm"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2, ease: "easeOut" }}
+          <ShineBorder
+            className="text-center w-full"
+            color={"white"}
+            borderWidth={2}
+            borderRadius={12}
+            duration={30}
           >
-            <h2 className="text-3xl font-bold mb-4">Ready to see what works?</h2>
-            <p className="text-gray-400 mb-6">Join thousands of content creators who are boosting their video performance.</p>
-            {showLogin ? (
-              <SignIn />
-            ) : (
-              <Button 
-                size="lg" 
-                className="bg-white text-black hover:bg-gray-200 transition-colors"
-                onClick={() => setShowLogin(true)}
-              >
-                Start A/B Testing Now
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            )}
-          </motion.div>
+            <div className="p-8">
+              <h2 className="text-3xl font-bold mb-4 text-white">Ready to see what works?</h2>
+              <p className="text-gray-300 mb-6">Join thousands of content creators who are boosting their video performance.</p>
+              {showLogin ? (
+                <SignIn />
+              ) : (
+                <Button 
+                  size="lg" 
+                  className="bg-white text-black hover:bg-gray-200 transition-colors"
+                  onClick={() => setShowLogin(true)}
+                >
+                  Start A/B Testing Now
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              )}
+            </div>
+          </ShineBorder>
         </main>
 
         <footer className="container mx-auto px-4 py-8 text-center text-gray-600">
