@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from 'lucide-react'
 import { SignIn } from "@/components/sign-in"
-import Particles from '@/components/ui/particles'
+import Particles from "@/components/ui/particles"
 import { ShineBorder } from "@/components/ui/shine-border";
 
 export default function LandingPage() {
@@ -33,9 +33,9 @@ export default function LandingPage() {
       <Particles
         className="absolute inset-0"
         quantity={100}
-        staticity={0}
-        ease={10}
-        size={0.5}
+        staticity={50}
+        ease={50}
+        refresh={false}
         color="#ffffff"
       />
 
