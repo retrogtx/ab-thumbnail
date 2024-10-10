@@ -134,11 +134,16 @@ export default function PollPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="flex justify-center mb-4">
+        <Button className="flex flex-col justify-center items-center" onClick={() => window.location.href = '/'}>
+          Click here to create your own poll!
+        </Button>
+      </div>
       <Card className="mb-8">
-        <CardHeader>
+        <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold">{pollData.title}</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="text-center">
           <p className="text-lg">{pollData.description}</p>
         </CardContent>
       </Card>
