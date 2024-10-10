@@ -32,9 +32,9 @@ export default function LandingPage() {
       {/* Particles */}
       <Particles
         className="absolute inset-0"
-        quantity={100}
-        staticity={50}
-        ease={50}
+        quantity={150}
+        staticity={0}
+        ease={10}
         size={0.5}
         color="#ffffff"
       />
@@ -111,10 +111,10 @@ export default function LandingPage() {
             color={"white"}
             borderWidth={2}
             borderRadius={12}
-            duration={30}
+            duration={15}
           >
             <div className="p-8">
-              <h2 className="text-3xl font-bold mb-4 text-white">Ready to see what works?</h2>
+              <h2 className="text-2xl font-bold mb-4 text-white">Ready to see what works?</h2>
               <p className="text-gray-300 mb-6">Join thousands of content creators who are boosting their video performance.</p>
               {showLogin ? (
                 <SignIn />
