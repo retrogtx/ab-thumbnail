@@ -78,15 +78,22 @@ const Particles: React.FC<ParticlesProps> = ({
   const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
 
   useEffect(() => {
+    console.log("Particles useEffect triggered");
     if (canvasRef.current) {
       context.current = canvasRef.current.getContext("2d");
+      console.log("Canvas context set");
+    } else {
+      console.log("Canvas ref is null");
     }
     initCanvas();
     animate();
     window.addEventListener("resize", initCanvas);
 
+    console.log("Particles component mounted");
+
     return () => {
       window.removeEventListener("resize", initCanvas);
+      console.log("Particles component unmounted");
     };
   }, [color]);
 
@@ -99,8 +106,10 @@ const Particles: React.FC<ParticlesProps> = ({
   }, [refresh]);
 
   const initCanvas = () => {
+    console.log("initCanvas called");
     resizeCanvas();
     drawParticles();
+    console.log("Canvas initialized", canvasSize.current);
   };
 
   const onMouseMove = () => {

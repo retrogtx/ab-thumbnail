@@ -33,29 +33,29 @@ export function ShineBorder({
 }: ShineBorderProps) {
   return (
     <div
-      style={
-        {
-          "--border-radius": `${borderRadius}px`,
-        } as React.CSSProperties
-      }
+      style={{
+        "--border-radius": `${borderRadius}px`,
+      } as React.CSSProperties}
       className={cn(
         "relative grid min-h-[60px] w-fit min-w-[300px] place-items-center rounded-[--border-radius] bg-black p-3 text-black dark:bg-black dark:text-white",
-        className,
+        className
       )}
     >
       <div
-        style={
-          {
-            "--border-width": `${borderWidth}px`,
-            "--border-radius": `${borderRadius}px`,
-            "--duration": `${duration}s`,
-            "--mask-linear-gradient": `linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)`,
-            "--background-radial-gradient": `radial-gradient(transparent,transparent, ${color instanceof Array ? color.join(",") : color},transparent,transparent)`,
-          } as React.CSSProperties
-        }
-        className={`before:bg-shine-size before:absolute before:inset-0 before:aspect-square before:size-full before:rounded-[--border-radius] before:p-[--border-width] before:will-change-[background-position] before:content-[""] before:![-webkit-mask-composite:xor] before:![mask-composite:exclude] before:[background-image:--background-radial-gradient] before:[background-size:300%_300%] before:[mask:--mask-linear-gradient] motion-safe:before:animate-shine before:pointer-events-none`}
-      ></div>
-      {children}
+        style={{
+          "--border-width": `${borderWidth}px`,
+          "--border-radius": `${borderRadius}px`,
+          "--duration": `${duration}s`,
+          "--mask-linear-gradient": `linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)`,
+          "--background-radial-gradient": `radial-gradient(transparent,transparent, ${color instanceof Array ? color.join(",") : color},transparent,transparent)`,
+        } as React.CSSProperties}
+        className="absolute inset-0 pointer-events-none"
+      >
+        <div className="before:bg-shine-size before:absolute before:inset-0 before:aspect-square before:size-full before:rounded-[--border-radius] before:p-[--border-width] before:will-change-[background-position] before:content-[''] before:![-webkit-mask-composite:xor] before:![mask-composite:exclude] before:[background-image:--background-radial-gradient] before:[background-size:300%_300%] before:[mask:--mask-linear-gradient] motion-safe:before:animate-shine before:pointer-events-none" />
+      </div>
+      <div className="relative z-10">
+        {children}
+      </div>
     </div>
   );
 }
