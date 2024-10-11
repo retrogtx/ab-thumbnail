@@ -2,6 +2,8 @@
 
 This app allows people to A/B test their photos before publishing, focused on YouTube thumbnails. By enabling external users to vote on thumbnail options, creators can choose the most appealing thumbnail based on real audience feedback.
 
+This is a simple A/B testing app for your photos without the hassle of sending the same pictures to a different set of friends, or posting them to different social media profiles for feedback.
+
 ## Features
 
 - **Thumbnail Upload**: Users can upload two or more thumbnail variations for comparison.

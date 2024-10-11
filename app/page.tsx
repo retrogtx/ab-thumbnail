@@ -73,11 +73,11 @@ export default function LandingPage() {
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           >
             {showLogin ? (
-              <SignIn />
+              <SignIn className="bg-white text-black hover:bg-white hover:text-black transition-colors" />
             ) : (
               <Button 
                 size="lg" 
-                className="bg-white text-black hover:bg-gray-200 transition-colors"
+                className="bg-white text-black hover:bg-white hover:text-black transition-colors"
                 onClick={() => setShowLogin(true)}
               >
                 Get Started
@@ -116,18 +116,20 @@ export default function LandingPage() {
             <div className="p-8">
               <h2 className="text-3xl font-bold mb-4 text-white">Ready to see what works?</h2>
               <p className="text-gray-300 mb-6">Join thousands of content creators who are boosting their video performance.</p>
-              {showLogin ? (
-                <SignIn />
-              ) : (
-                <Button 
-                  size="lg" 
-                  className="bg-white text-black hover:bg-gray-200 transition-colors"
-                  onClick={() => setShowLogin(true)}
-                >
-                  Start A/B Testing Now
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              )}
+              <div className="flex justify-center">
+                {showLogin ? (
+                  <SignIn className="bg-white text-black hover:bg-white hover:text-black transition-colors" />
+                ) : (
+                  <Button 
+                    size="lg" 
+                    className="bg-white text-black hover:bg-gray-200 transition-colors"
+                    onClick={() => setShowLogin(true)}
+                  >
+                    Start A/B Testing Now
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                )}
+              </div>
             </div>
           </ShineBorder>
         </main>
