@@ -1,10 +1,11 @@
 "use client"
 
+import Image from 'next/image'
 import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 
-export function SignIn() {
+export function SignIn({ className }: { className?: string }) {
   const router = useRouter()
 
   const handleSignIn = async () => {
@@ -21,7 +22,14 @@ export function SignIn() {
   }
 
   return (
-    <Button onClick={handleSignIn} variant="default">
+    <Button onClick={handleSignIn} variant="default" className={`flex items-center ${className}`}>
+      <Image
+        src="/google.png"
+        alt="Google logo"
+        width={18}
+        height={18}
+        className="mr-2"
+      />
       Sign in with Google
     </Button>
   )
